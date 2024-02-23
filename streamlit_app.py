@@ -42,5 +42,7 @@ chart = alt.Chart(df).mark_line().encode(
     height=400
 )
 
+st.line_chart(df)
+
 # Streamlit Anzeige
 st.write(chart)
