@@ -38,8 +38,8 @@ chart = alt.Chart(df).mark_line().encode(
     y='value:Q',
     color='field:N'
 ).properties(
-    width=800,
-    height=400
+    width=1000,
+    height=200
 )
 
 # Streamlit Anzeige
