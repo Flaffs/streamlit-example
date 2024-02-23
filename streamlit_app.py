@@ -38,7 +38,7 @@ chart = alt.Chart(df).mark_line().encode(
     y='value:Q',
     color='field:N'
 ).properties(
-    width=8000,
+    width=800,
     height=300
 )
 
