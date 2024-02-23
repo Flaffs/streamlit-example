@@ -4,6 +4,7 @@ import pandas as pd
 import streamlit as st
 import influxdb_client
 import plotly.express as px
+from datetime import datetime, timedelta
 from influxdb_client.client.write_api import SYNCHRONOUS
 
 
@@ -18,9 +19,17 @@ client = influxdb_client.InfluxDBClient(
     org=org
 )
 
+# Datumsauswahl über Date Picker
+start_date = st.date_input("Startdatum", datetime.now() - timedelta(days=7))
+end_date = st.date_input("Enddatum", datetime.now())
+
+# Umwandlung der Datumsangaben in Unix-Zeitstempel
+start_timestamp = int(datetime(start_date.year, start_date.month, start_date.day).timestamp()) * 1000000000
+end_timestamp = int(datetime(end_date.year, end_date.month, end_date.day).timestamp()) * 1000000000
+
 query_api = client.query_api()
 query = 'from(bucket: "CO2-Messer")\
-    |> range(start: -2h)\
+    |> range(start: {start_timestamp}, stop: {end_timestamp})\
     |> filter(fn: (r) => r._measurement == "CO2-Messer")\
     |> filter(fn: (r) => r._field == "temperature")'
 
@@ -35,7 +44,7 @@ df = pd.DataFrame(data, columns=["time", "field", "value"])
 
 
 # Plot mit Plotly
-fig = px.line(df, x="time", y="value", title='Temperature Over Time', width=800, height=400)
+fig = px.line(df, x="time", y="temperatur", title='Temperatur', width=800, height=400)
 
 # Zeige den Plot mit st.plotly_chart() an
 st.plotly_chart(fig)
