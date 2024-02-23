@@ -30,6 +30,9 @@ def get_data(start_date, end_date):
     start_timestamp = int(datetime(start_date.year, start_date.month, start_date.day).timestamp()) * 1000000000
     end_timestamp = int(datetime(end_date.year, end_date.month, end_date.day).timestamp()) * 1000000000
 
+    st.write(start_timestamp)
+    st.write(end_timestamp)
+
     query_api = client.query_api()
     query = 'from(bucket: "CO2-Messer")\
         |> range(start: {start_timestamp}, stop: {end_timestamp})\
