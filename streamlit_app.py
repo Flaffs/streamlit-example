@@ -24,15 +24,23 @@ query = 'from(bucket: "CO2-Messer")\
     |> filter(fn: (r) => r._field == "temperature")'
 
 result = query_api.query(org=org, query=query)
-points = result.get_points()
 
-df = pd.DataFrame(points)
+data = []
+for table in result:
+    for record in table.records:
+        data.append((record.get_time(), record.get_field(), record.get_value()))
 
-st.title('Temperaturverlauf')
-st.write('Visualisierung des Temperaturverlaufs')
+df = pd.DataFrame(data, columns=["time", "field", "value"])
 
-# Daten anzeigen
-st.write(df)
+# Altair Visualisierung erstellen
+chart = alt.Chart(df).mark_line().encode(
+    x='time:T',
+    y='value:Q',
+    color='field:N'
+).properties(
+    width=800,
+    height=400
+)
 
-# Zeitreihenvisualisierung
-st.line_chart(df.set_index(pd.to_datetime(df['time']))['temperature'])
+# Streamlit Anzeige
+st.write(chart)
