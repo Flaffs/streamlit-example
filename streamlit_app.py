@@ -42,5 +42,7 @@ chart = alt.Chart(df).mark_line().encode(
     height=400
 )
 
+st.line_chart(df.set_index("time"), height=400, y_axis_format="%.2f")
+
 # Streamlit Anzeige
 st.write(chart)
