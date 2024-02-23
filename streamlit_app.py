@@ -35,7 +35,7 @@ def get_data(start_date, end_date):
 
     query_api = client.query_api()
     query = 'from(bucket: "CO2-Messer")\
-        |> range(start: {start_timestamp}, stop: {end_timestamp})\
+        |> range(start: ' + str(start_timestamp) + ', stop: ' + str(end_timestamp) + ')\
         |> filter(fn: (r) => r._measurement == "CO2-Messer")\
         |> filter(fn: (r) => r._field == "temperature")'
 
