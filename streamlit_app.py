@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 import influxdb_client
+import plotly.express as px
 from influxdb_client.client.write_api import SYNCHRONOUS
 
 
@@ -44,3 +45,9 @@ chart = alt.Chart(df).mark_line().encode(
 
 # Streamlit Anzeige
 st.write(chart)
+
+# Plot mit Plotly
+fig = px.line(df, x="time", y="value", title='Temperature Over Time', width=800, height=400)
+
+# Zeige den Plot mit st.plotly_chart() an
+st.plotly_chart(fig)
