@@ -33,18 +33,6 @@ for table in result:
 
 df = pd.DataFrame(data, columns=["time", "field", "value"])
 
-# Altair Visualisierung erstellen
-chart = alt.Chart(df).mark_line().encode(
-    x='time:T',
-    y='value:Q',
-    color='field:N'
-).properties(
-    width=800,
-    height=300
-)
-
-# Streamlit Anzeige
-st.write(chart)
 
 # Plot mit Plotly
 fig = px.line(df, x="time", y="value", title='Temperature Over Time', width=800, height=400)
