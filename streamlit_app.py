@@ -2,42 +2,37 @@ import altair as alt
 import numpy as np
 import pandas as pd
 import streamlit as st
+import influxdb_client
+from influxdb_client.client.write_api import SYNCHRONOUS
 
-"""
-# Welcome to Streamlit!
 
-Edit `/streamlit_app.py` to customize this app to your heart's desire :heart:.
-If you have any questions, checkout our [documentation](https://docs.streamlit.io) and [community
-forums](https://discuss.streamlit.io).
+bucket = st.secrets["BUCKET"]
+org = st.secrets["ORG"]
+token = st.secrets["TOKEN"]
+url=st.secrets["URL"]
 
-In the meantime, below is an example of what you can do with just a few lines of code:
-"""
+client = influxdb_client.InfluxDBClient(
+    url=url,
+    token=token,
+    org=org
+)
 
-num_points = st.slider("Number of points in spiral", 1, 10000, 1100)
-num_turns = st.slider("Number of turns in spiral", 1, 300, 31)
+query_api = client.query_api()
+query = 'from(bucket: "CO2-Messer")\
+    |> range(start: -2h)\
+    |> filter(fn: (r) => r._measurement == "CO2-Messer")\
+    |> filter(fn: (r) => r._field == "temperature")'
 
-st.title("Das ist ein TEST-TITEL")
-st.title(st.secrets["PASSWORT"])
+result = query_api.query(org=org, query=query)
+points = result.get_points()
 
-indices = np.linspace(0, 1, num_points)
-theta = 2 * np.pi * num_turns * indices
-radius = indices
+df = pd.DataFrame(points)
 
-x = radius * np.cos(theta)
-y = radius * np.sin(theta)
+st.title('Temperaturverlauf')
+st.write('Visualisierung des Temperaturverlaufs')
 
-df = pd.DataFrame({
-    "x": x,
-    "y": y,
-    "idx": indices,
-    "rand": np.random.randn(num_points),
-})
+# Daten anzeigen
+st.write(df)
 
-st.altair_chart(alt.Chart(df, height=700, width=700)
-    .mark_point(filled=True)
-    .encode(
-        x=alt.X("x", axis=None),
-        y=alt.Y("y", axis=None),
-        color=alt.Color("idx", legend=None, scale=alt.Scale()),
-        size=alt.Size("rand", legend=None, scale=alt.Scale(range=[1, 150])),
-    ))
+# Zeitreihenvisualisierung
+st.line_chart(df.set_index(pd.to_datetime(df['time']))['temperature'])
