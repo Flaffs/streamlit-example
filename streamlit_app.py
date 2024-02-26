@@ -3,7 +3,6 @@ import streamlit as st
 import influxdb_client
 import plotly.express as px
 from datetime import datetime
-
 from streamlit_date_picker import date_range_picker
 
 
