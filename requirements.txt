@@ -3,3 +3,4 @@ pandas
 streamlit
 influxdb-client
 plotly
+streamlit_datetime_range_picker
