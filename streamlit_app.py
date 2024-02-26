@@ -3,7 +3,8 @@ import streamlit as st
 import influxdb_client
 import plotly.express as px
 from datetime import datetime
-from streamlit_datetime_range_picker import datetime_range_picker
+
+from streamlit_date_picker import date_range_picker
 
 
 bucket = st.secrets["BUCKET"]
@@ -18,7 +19,7 @@ client = influxdb_client.InfluxDBClient(
 )
 
 # zeit intervall auswählen
-datetime_string = datetime_range_picker(start=0, end=0, unit='minutes', key='range_picker')
+datetime_string = date_range_picker(start=0, end=0, unit='minutes', key='range_picker')
 
 start_date = int(datetime.strptime(datetime_string[0], '%Y-%m-%d %H:%M:%S').timestamp())
 end_date = int(datetime.strptime(datetime_string[1], '%Y-%m-%d %H:%M:%S').timestamp())
