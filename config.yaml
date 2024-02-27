@@ -1,0 +1,9 @@
+credentials:
+  usernames:
+    netzsch:
+      name: Netzsch
+      password: $2b$12$sgcivWosE6dbkQsuKe9n1esXgbBb.q6ddsx9CqpsbF86cBdvjfCny
+cookie:
+  expiry_days: 3
+  key: NetzschStreamlitDemoSite
+  name: NetzschStreamlitLogInCookie
