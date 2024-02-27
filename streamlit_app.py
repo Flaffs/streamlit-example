@@ -10,7 +10,6 @@ from yaml.loader import SafeLoader
 
 
 def get_data(interval, time_picker, client, org):
-    st.write(interval)
 
     query_api = client.query_api()
     query = 'from(bucket: "CO2-Messer")\
@@ -21,8 +20,6 @@ def get_data(interval, time_picker, client, org):
     if interval:
         query += '|> aggregateWindow(every: ' + str(interval) + ', fn: mean)'
 
-    print("das ist die query: ")
-    print(query)
 
     result = query_api.query(org=org, query=query)
 
