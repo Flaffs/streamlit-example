@@ -80,10 +80,11 @@ def home():
         # Zeige den Plot mit st.plotly_chart() an
         st.plotly_chart(fig)
 
-
+# load config
 with open('config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
 
+# authenticator configuration
 authenticator = stauth.Authenticate(
     config['credentials'],
     config['cookie']['name'],
@@ -91,6 +92,7 @@ authenticator = stauth.Authenticate(
     config['cookie']['expiry_days'],
 )
 
+# login
 name, authentication_status, username = authenticator.login()
 
 if authentication_status:
