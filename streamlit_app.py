@@ -51,11 +51,6 @@ def home():
     # zeit intervall auswählen
     datetime_string = date_range_picker(start=0, end=0, unit='minutes', key='range_picker')
 
-    start_date = int(datetime.strptime(datetime_string[0], '%Y-%m-%d %H:%M:%S').timestamp())
-    end_date = int(datetime.strptime(datetime_string[1], '%Y-%m-%d %H:%M:%S').timestamp())
-
-    time_picker = {"start_date": start_date, "end_date": end_date}
-
     # Dropdown-Menü für die aggregate
     time_intervals = {
         "raw": None,
@@ -74,6 +69,11 @@ def home():
 
     # Button zum Ausführen der Abfrage
     if st.button("Daten abrufen"):
+        # Zeit in UnixTimestamp umrechnen
+        start_date = int(datetime.strptime(datetime_string[0], '%Y-%m-%d %H:%M:%S').timestamp())
+        end_date = int(datetime.strptime(datetime_string[1], '%Y-%m-%d %H:%M:%S').timestamp())
+        time_picker = {"start_date": start_date, "end_date": end_date}
+
         interval = time_intervals[selected_interval]
         df = get_data(interval, time_picker, client, org)
 
