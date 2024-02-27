@@ -4,3 +4,4 @@ streamlit
 influxdb-client
 plotly
 streamlit-date-picker
+streamlit-authenticator
